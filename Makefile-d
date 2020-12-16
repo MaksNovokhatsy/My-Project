@@ -1,0 +1,25 @@
+all: EnCoder DeCoder
+
+encoder: EnCoder.o libmineur.so
+	gcc -std=c99 -o EnCoder EnCoder.o -L. -lmineur -Wl,-rpath,.
+
+decoder: DeCoder.o libmineur.so
+	gcc -std=c99 -o  DeCoder DeCoder.o -L. -lmineur -Wl,-rpath,.
+	
+encoder.o: EnCoder.c
+	gcc -c -std=c99 EnCoder.c
+
+decoder.o: DeCoder.c
+	gcc -c -std=c99 DeCoder.c
+	
+libmineur.so: funclib.o coding.o
+	gcc -shared -o  libmineur.so funclib.o coding.o
+	
+strlib.o: funclib.c
+	gcc -c -fPIC -std=c99 funclib.c 
+	
+cipher.o: coding.c
+	gcc -c -fPIC -std=c99 coding.c
+
+clean:
+	rm -rf *.o *.so EnCoder DeCoder
