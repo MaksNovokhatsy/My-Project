@@ -1,17 +1,14 @@
 #include "coding.h"
 
 char* immutableXorDecoder(char* str, char* key) {
-	int i, j;
+	int i;
 	char* Pstring;
 
 	Pstring = (char*)calloc(strlen(str) + 1, sizeof(char));
 	if (Pstring != NULL) {
 
-		for (i = 0, j = 0; i < strlen(str); i++, j++) {
-			if (j > strlen(key)) {
-				j = 0;
-			}
-			Pstring[i] = str[i] ^ key[j];
+		for (i = 0; i < strlen(str); i++) {
+			Pstring[i] = str[i] ^= key[i % strlen(key)];
 		}
 		return (Pstring);
 	}
@@ -22,14 +19,11 @@ char* immutableXorDecoder(char* str, char* key) {
 }
 
 void mutableXorDecoder(char* str, const int LENGTHSTRING, char* key) {
-	int i, j;
+	int i;
 	char* Pstring;
 
-	for (i = 0, j = 0; i < strlen(str); i++, j++) {
-		if (j > strlen(key)) {
-			j = 0;
-		}
-		str[i] = str[i] ^ key[j];
+	for (i = 0; i < strlen(str); i++) {
+		str[i] ^= key[i % strlen(key)];
 	}
 }
 
@@ -82,7 +76,7 @@ char* immutableCaesarDecoder(char* str, const int LENGTHSTRING, int offcet) {
 		return (Pstring);
 	}
 	else {
-		printf("Memory error(immutableСaesarEncoder);\n");
+		printf("Memory error(immutableРЎaesarEncoder);\n");
 		return 0;
 	}
 }
@@ -121,19 +115,16 @@ void mutableCaesarDecoder(char* str, int offcet) {
 }
 
 char* immutableXorEncoder(char* str, char* key) {
-	int i, j;
-    char* Pstring;
+	int i;
+	char* Pstring;
 
 	Pstring = (char*)calloc(strlen(str) + 1, sizeof(char));
 	if (Pstring != NULL) {
 
-		for (i = 0, j = 0; i < strlen(str); i++, j++) {
-			if (j > strlen(key)) {
-				j = 0;
-			}
-			Pstring[i] = str[i] ^ key[j];
+		for (i = 0; i < strlen(str); i++) {
+			Pstring[i] = str[i] ^= key[i % strlen(key)];
 		}
-     	return (Pstring);
+		return (Pstring);
 	}
     else {
 		printf("Memory error(immutableXorEndecoder);\n");
@@ -142,14 +133,11 @@ char* immutableXorEncoder(char* str, char* key) {
 }
 
 void mutableXorEncoder(char* str, const int LENGTHSTRING, char* key) {
-	int i, j;
+	int i;
 	char* Pstring;
 
-		for (i = 0, j = 0; i < strlen(str); i++, j++) {
-			if (j > strlen(key)) {
-				j = 0;
-			}
-			str[i] = str[i] ^ key[j];
+		for (i = 0; i < strlen(str); i++) {
+			str[i] ^= key[i % strlen(key)];
 		}
 }
 
@@ -202,7 +190,7 @@ char* immutableCaesarEncoder(char* str, const int LENGTHSTRING, int offcet) {
 		return (Pstring);
 	}
 	else {
-		printf("Memory error(immutableСaesarEncoder);\n");
+		printf("Memory error(immutableРЎaesarEncoder);\n");
 		return 0;
 	}
 }
