@@ -2,77 +2,75 @@
 #include "coding.h"
 
 int main() {
-int i, change = 0, shift = 0;
-char* Pstring;
-char* Key;
-const int LENGTHKEY = 21;
-const int LENGTHSTRING = 21;
+	int i, change = 0, shift = 0;
+	int const LENGTHSTRING = 21;
+	int const LENGTHKEY = 21;
+	char* str;
+	char* key;
 
-Key = (char*)calloc(LENGTHKEY, sizeof(char));
-Pstring = (char*)calloc(LENGTHSTRING, sizeof(char));
-if (Pstring != NULL) {
-        //printf("Введите строку динной не больше %d", LENGTHSTRING -1);  
-        printf("Выберите способо кодирования(1 - цезарь 2 - XOR): ");
-        scanf("%d", &change);
-        if(change != 1 && change != 2) {
-                printf("Вы ввели некоректные данные для переменной");
-                exit(0);
-        }   
-        getchar();
+	str = (char*)calloc(LENGTHSTRING, sizeof(char));
+	key = (char*)calloc(LENGTHKEY, sizeof(char));
+	if ((str != NULL) && (key != NULL)) {
 
-        if(change == 2) {
-          printf("Введите Ключ динной не больше %d: ", LENGTHKEY - 1);
-	  fgets(Key, LENGTHKEY, stdin);
-	  printf("\n");
+		printf("Enter string(limit %d): ", LENGTHSTRING - 1);
+		fgets(str, 20, stdin);
 
-    	  for (i = 0; i < LENGTHKEY; i++) {
-  		  if (Key[i] == 10)
-		  Key[i] = 0;
-	  }
-        }
+		for (i = 0; i < LENGTHSTRING; i++) {
+			if (str[i] == 10) {
+				str[i] = 0;
+			}
+		}
 
-        if(change == 1) {
-          printf("Введите сдвиг для шифра: ");
-          scanf("%d", &shift);
+		printf("Select the encoding method(Cesar - 1, XOR - 2): ");
+		scanf("%d", &change);
+		getchar();
 
-        }
-        getchar();
+		if ((change != 1) && (change != 2)) {
+			printf("Incorrect input\n");
+			exit(0);
+		}
 
-	printf("Введите Строку динной не больше %d: ", LENGTHSTRING - 1);
-	fgets(Pstring, LENGTHSTRING, stdin);
-        if(strlen(Pstring) > LENGTHSTRING - 1) {
-          printf("вы ввели слишком большую строку");  
-          exit(0);
-        } 
-	printf("\n");
-	printf("Вы ввели данную строку: %s\n\n", Pstring);
+		if (change == 1) {
+			printf("Enter the offset: ");
+			scanf("%d", &shift);
+			getchar();
+		}
 
-	for (i = 0; i < LENGTHSTRING; i++) {
-	        if (Pstring[i] == 10)
-		Pstring[i] = 0;
+		if (change == 2) {
+			printf("Enter key(limit %d): ", LENGTHKEY - 1);
+			fgets(key, 20, stdin);
+		}
+
+		for (i = 0; i < LENGTHKEY; i++) {
+			if (key[i] == 10) {
+				key[i] = 0;
+			}
+		}
+
+		mutableClearIcon(str, LENGTHSTRING);
+		mutableClearSpaceBE(str, LENGTHSTRING);
+		mutableChangeRegister(str, LENGTHSTRING, 2);
+
+		printf("\n");
+		if (change == 1) {
+			printf("Entered string: %s", str);
+			str = immutableCaesarEncoder(str, LENGTHSTRING, shift);
+			printf("Encoded string: %s\n\n", str);
+		}
+
+		if (change == 2) {
+			printf("Entered string: %s", str);
+			str = immutableXorEncoder(str, key);
+			printf("Encoded string: %s\n\n", str);
+		}
+
+		free(str);
+		free(key);
+
+		return 0;
 	}
-
-	mutableClearIcon(Pstring, LENGTHSTRING);
-        mutableClearSpaceBE(Pstring, LENGTHSTRING);
-        mutableChangeRegister(Pstring, LENGTHSTRING, 2);
-
-        if (change == 1) {
-          Pstring = immutableCaesarEncoder(Pstring, LENGTHSTRING, shift);
-          printf("Закодированная строка методом Цезаря %s\n\n", Pstring);
-        }        
-
-        if (change == 2) {
-          Pstring = immutableXorEncoder(Pstring, Key);
-          printf("Закодированная методом XOR строка %s\n\n", Pstring);
-        }   
-       
-	return 0;
-			
-	free(Key);
-	free(Pstring);
-}
-else {
-	printf("Memmory error(main);\n");
-	return 0;
-}
+	else {
+		printf("MEMORY ERROR IN MAIN");
+			return 0;
+	}
 }
